@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TKA Math Master SMP - Persiapan Kompetensi Akademik</title>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const learningData = [
+            {
+                id: 1,
+                category: "Bilangan",
+                icon: "Calculator",
+                color: "bg-blue-500",
+                competency: "Memahami struktur bilangan real, rasio, dan pola pertumbuhan untuk menyelesaikan masalah nyata.",
+                materials: [
+                    { 
+                        title: "Logika Operasi Bilangan Real", 
+                        explanation: "Operasi bilangan real adalah fondasi matematika. Penting untuk memahami bahwa tanda negatif melambangkan arah atau 'kekurangan'. Dalam operasi campuran (PEMDAS), perkalian dan pembagian dikerjakan lebih dulu karena mereka mewakili pengelompokan unit, sedangkan penjumlahan/pengurangan mewakili akumulasi satuan.",
+                        examples: [
+                            { level: "Dasar", q: "Suhu udara di Puncak Jaya saat pagi hari adalah -7°C. Menjelang siang, suhu naik 15°C. Berapa suhu udara pada siang hari?", a: "-7 + 15 = 8. Suhu siang hari adalah 8°C." },
+                            { level: "Menengah", q: "Seorang pedagang memiliki modal Rp500.000. Hari pertama rugi Rp120.000, hari kedua untung Rp200.000, namun ia harus membayar biaya administrasi Rp35.000. Berapa posisi keuangan pedagang sekarang?", a: "500.000 - 120.000 + 200.000 - 35.000 = 545.000. Saldo akhirnya adalah Rp545.000." },
+                            { level: "Tinggi (HOTS)", q: "Daging beku bersuhu -18°C dikeluarkan dari kulkas. Setiap 3 menit, suhu daging naik 4°C. Jika suhu ruangan adalah 22°C, berapa lama waktu yang dibutuhkan agar suhu daging tepat mencapai setengah dari suhu ruangan?", a: "Target suhu = 22 / 2 = 11°C. Selisih kenaikan = 11 - (-18) = 29°C. Jumlah kenaikan yang dibutuhkan = 29 / 4 = 7,25 kali. Waktu total = 7,25 x 3 menit = 21,75 menit (21 menit 45 detik)." }
+                        ],
+                        items: [
+                            "Prioritas operasi: ( ), pangkat, x/÷, +/-.",
+                            "Konsep nol sebagai titik acuan perubahan nilai."
+                        ] 
+                    },
+                    { 
+                        title: "Rasio, Skala & Perbandingan", 
+                        explanation: "Rasio membandingkan dua kuantitas. Perbandingan senilai terjadi jika dua variabel berubah ke arah yang sama (misal: jumlah barang vs harga). Perbandingan berbalik nilai terjadi jika satu variabel naik namun yang lain turun (misal: kecepatan vs waktu tempuh).",
+                        examples: [
+                            { level: "Dasar", q: "Rasio jumlah siswa laki-laki dan perempuan adalah 3:5. Jika siswa laki-laki ada 15 orang, berapa jumlah siswa perempuan?", a: "1 bagian = 15/3 = 5. Siswa perempuan = 5 x 5 = 25 orang." },
+                            { level: "Menengah", q: "Sebuah denah rumah berskala 1:150. Jika ukuran ruang tamu pada denah adalah 3cm x 4cm, berapakah luas ruang tamu sebenarnya dalam meter persegi?", a: "Panjang asli = 3 x 150 = 450cm (4,5m). Lebar asli = 4 x 150 = 600cm (6m). Luas = 4,5 x 6 = 27 m²." },
+                            { level: "Tinggi (HOTS)", q: "Pembangunan gedung direncanakan selesai dalam 40 hari oleh 15 pekerja. Setelah bekerja selama 10 hari, pekerjaan terhenti 6 hari karena hujan. Berapa tambahan pekerja agar gedung tetap selesai tepat waktu?", a: "Sisa beban kerja = (40-10) x 15 = 450 orang-hari. Sisa waktu tersedia = 30 - 6 = 24 hari. Pekerja yang dibutuhkan = 450 / 24 = 18,75 (bulatkan ke atas jadi 19). Tambahan = 19 - 15 = 4 orang." }
+                        ],
+                        items: [
+                            "Skala adalah rasio antara jarak gambar dengan jarak sebenarnya.",
+                            "Logika perbandingan berbalik nilai: Hasil perkalian variabel selalu konstan."
+                        ]
+                    }
+                ],
+                notes: "Fokus pada penalaran logis terhadap besaran angka dan hubungan proporsional.",
+                quiz: [
+                    { q: "Seorang penyelam berada 18m di bawah permukaan laut. Seekor burung terbang 12m di atas permukaan laut tepat di atas penyelam. Berapa jarak vertikal antara burung dan penyelam?", options: ["6 meter", "30 meter", "24 meter", "20 meter"], correct: 1 },
+                    { q: "Sebuah peta memiliki skala 1 : 500.000. Jarak kota A ke B pada peta 8 cm. Jika mobil menempuh jarak tersebut dengan kecepatan 80 km/jam, berapa lama perjalanannya?", options: ["20 menit", "30 menit", "40 menit", "60 menit"], correct: 1 },
+                    { q: "Harga sebuah tas setelah diskon 20% adalah Rp160.000. Berapakah harga tas tersebut sebelum diskon?", options: ["Rp180.000", "Rp200.000", "Rp220.000", "Rp240.000"], correct: 1 },
+                    { q: "Persediaan makanan 20 ekor ayam akan habis dalam 15 hari. Jika dijual 5 ekor ayam, maka persediaan makanan akan habis dalam...", options: ["18 hari", "20 hari", "22 hari", "25 hari"], correct: 1 },
+                    { q: "Suhu awal air adalah 25°C. Setelah dimasukkan ke freezer selama 2 jam, suhunya turun 30°C. Suhu air sekarang adalah...", options: ["-5°C", "5°C", "-55°C", "0°C"], correct: 0 },
+                    { q: "Ibu mencampur 2 liter sirup dengan 5 liter air. Jika ibu ingin membuat campuran yang sama dengan 10 liter air, berapa liter sirup yang dibutuhkan?", options: ["3 liter", "4 liter", "5 liter", "6 liter"], correct: 1 },
+                    { q: "Hasil dari (-4) x 7 + 12 : (-3) adalah...", options: ["-32", "-24", "24", "32"], correct: 0 },
+                    { q: "Jarak sebenarnya dua kota adalah 60 km. Jika digambar dengan skala 1 : 1.200.000, maka jarak pada peta adalah...", options: ["5 cm", "10 cm", "12 cm", "15 cm"], correct: 0 },
+                    { q: "Bilangan 0,0000078 jika ditulis dalam notasi ilmiah menjadi...", options: ["7,8 x 10^-6", "7,8 x 10^-7", "78 x 10^-7", "0,78 x 10^-5"], correct: 0 },
+                    { q: "Dalam lomba lari, Andi berada 5m di depan Budi. Budi berada 2m di belakang Candra. Berapa jarak Andi dan Candra?", options: ["3m", "7m", "2m", "5m"], correct: 0 }
+                ]
+            },
+            {
+                id: 2,
+                category: "Aljabar",
+                icon: "Sigma",
+                color: "bg-emerald-500",
+                competency: "Memodelkan situasi dunia nyata ke dalam simbol matematika dan menganalisis pola.",
+                materials: [
+                    { 
+                        title: "Persamaan Linear (Pemodelan Situasi)", 
+                        explanation: "Aljabar adalah bahasa matematika untuk hal yang belum diketahui (variabel). Persamaan linear mencari titik kesetimbangan. Di dunia nyata, ini digunakan untuk menghitung pengeluaran, laba rugi, hingga perencanaan logistik.",
+                        examples: [
+                            { level: "Dasar", q: "Tiga kali suatu bilangan dikurangi 8 adalah 13. Tentukan bilangan tersebut.", a: "3x - 8 = 13 → 3x = 21 → x = 7." },
+                            { level: "Menengah", q: "Harga 3 buku dan 2 pensil adalah Rp17.000. Jika harga 1 buku Rp4.000, berapa harga 5 pensil?", a: "3(4000) + 2p = 17.000 → 12.000 + 2p = 17.000 → 2p = 5.000 → p = 2.500. Harga 5 pensil = 5 x 2.500 = Rp12.500." },
+                            { level: "Tinggi (HOTS)", q: "Umur Ayah saat ini adalah 3 kali umur Budi. Sepuluh tahun yang lalu, umur Ayah adalah 5 kali umur Budi. Berapa jumlah umur mereka saat ini?", a: "Model: A=3B dan (A-10)=5(B-10). Substitusi: 3B-10 = 5B-50 → 40 = 2B → B=20. Jadi Budi 20 thn, Ayah 60 thn. Jumlah = 80 thn." }
+                        ],
+                        items: [
+                            "Variabel melambangkan nilai yang berubah atau belum diketahui.",
+                            "Prinsip keadilan: Apa pun yang dilakukan di ruas kiri harus dilakukan di ruas kanan."
+                        ] 
+                    },
+                    { 
+                        title: "Analisis Pola & Deret", 
+                        explanation: "Pola adalah keteraturan. Aritmetika (selisih tetap) biasanya memodelkan pertumbuhan linier seperti tabungan tanpa bunga. Geometri (rasio tetap) memodelkan pertumbuhan eksponensial seperti pembelahan sel atau penyebaran informasi di internet.",
+                        examples: [
+                            { level: "Dasar", q: "Lanjutkan pola berikut: 2, 5, 8, 11, ... (dua suku berikutnya).", a: "Polanya adalah +3. Suku berikutnya: 14 dan 17." },
+                            { level: "Menengah", q: "Dalam sebuah gedung pertunjukan, baris pertama berisi 15 kursi, baris kedua 19, dan seterusnya selalu bertambah 4. Berapa banyak kursi pada baris ke-20?", a: "U20 = a + (19)b = 15 + (19 x 4) = 15 + 76 = 91 kursi." },
+                            { level: "Tinggi (HOTS)", q: "Sebuah virus membelah diri menjadi 3 setiap 30 menit. Jika pada jam 08.00 terdapat 10 virus, pada jam berapa jumlah virus mencapai lebih dari 800?", a: "Pola geometri: 10, 30, 90, 270, 810. Terjadi 4 kali pembelahan. Waktu = 4 x 30 menit = 120 menit (2 jam). Jam 10.00." }
+                        ],
+                        items: [
+                            "Aritmetika: Un = a + (n-1)b.",
+                            "Geometri: Un = ar^(n-1)."
+                        ]
+                    }
+                ],
+                notes: "Matematika aljabar melatih kemampuan abstraksi dan pemecahan masalah sistematis.",
+                quiz: [
+                    { q: "Budi membeli 5 kg beras dan membayar dengan uang Rp100.000. Ia menerima kembalian Rp35.000. Model persamaan harga beras (x) per kg adalah...", options: ["5x + 100.000 = 35.000", "5x - 35.000 = 100.000", "5x + 35.000 = 100.000", "100.000 + 35.000 = 5x"], correct: 2 },
+                    { q: "Jumlah tiga bilangan bulat berurutan adalah 42. Bilangan terkecil dari ketiganya adalah...", options: ["12", "13", "14", "15"], correct: 1 },
+                    { q: "Suku ke-50 dari barisan 7, 11, 15, 19... adalah...", options: ["199", "203", "207", "211"], correct: 1 },
+                    { q: "Penyelesaian dari 2(x - 3) = 10 adalah...", options: ["x = 5", "x = 8", "x = 7", "x = 4"], correct: 1 },
+                    { q: "Jika f(x) = 4x - 7, maka nilai f(5) adalah...", options: ["13", "15", "17", "20"], correct: 0 },
+                    { q: "Seutas tali dipotong menjadi 5 bagian membentuk barisan aritmetika. Jika potongan terpendek 4cm dan terpanjang 20cm, panjang tali semula adalah...", options: ["50cm", "60cm", "70cm", "80cm"], correct: 1 },
+                    { q: "Bentuk sederhana dari 3a + 2b - 5a + 7b adalah...", options: ["-2a + 9b", "2a + 9b", "-2a - 9b", "8a + 9b"], correct: 0 },
+                    { q: "Umur adik 5 tahun lebih muda dari kakak. Jika jumlah umur mereka 25 tahun, umur kakak adalah...", options: ["10 tahun", "15 tahun", "20 tahun", "12.5 tahun"], correct: 1 },
+                    { q: "Himpunan penyelesaian dari 3x - 5 < 7 adalah...", options: ["x < 4", "x > 4", "x < 6", "x > 6"], correct: 0 },
+                    { q: "Diberikan pola: 1, 4, 9, 16... Suku ke-10 adalah...", options: ["81", "90", "100", "121"], correct: 2 }
+                ]
+            },
+            {
+                id: 3,
+                category: "Geometri & Pengukuran",
+                icon: "Shapes",
+                color: "bg-purple-500",
+                competency: "Menganalisis sifat bangun ruang, hubungan sudut, dan penerapan Pythagoras.",
+                materials: [
+                    { 
+                        title: "Teorema Pythagoras & Aplikasi Nyata", 
+                        explanation: "Pythagoras memungkinkan kita menghitung jarak miring secara akurat. Konsep ini digunakan dalam navigasi, konstruksi bangunan, hingga menentukan ukuran layar televisi.",
+                        examples: [
+                            { level: "Dasar", q: "Sebuah segitiga siku-siku memiliki sisi tegak 6cm dan 8cm. Berapa panjang sisi miringnya?", a: "c = √(6² + 8²) = √100 = 10cm." },
+                            { level: "Menengah", q: "Sebuah tangga sepanjang 5m disandarkan pada tembok. Jika jarak ujung bawah tangga ke tembok adalah 3m, berapakah tinggi tembok yang dapat dicapai tangga?", a: "t = √(5² - 3²) = √16 = 4 meter." },
+                            { level: "Tinggi (HOTS)", q: "Dua buah tiang berdiri tegak di tanah datar, masing-masing tingginya 10m dan 15m. Jarak antara kedua tiang adalah 12m. Berapakah panjang kawat minimal yang dibutuhkan untuk menghubungkan kedua ujung atas tiang tersebut?", a: "Buat segitiga imajiner. Alas = 12m. Tinggi = 15 - 10 = 5m. Panjang kawat (miring) = √(12² + 5²) = √169 = 13 meter." }
+                        ],
+                        items: [
+                            "Hanya berlaku pada segitiga siku-siku.",
+                            "Triple Pythagoras (3,4,5; 5,12,13) mempermudah perhitungan cepat."
+                        ] 
+                    },
+                    { 
+                        title: "Volume & Luas Permukaan Bangun Ruang", 
+                        explanation: "Memahami kapasitas (volume) dan bungkus (luas permukaan). Penting dalam industri pengemasan dan arsitektur untuk efisiensi bahan.",
+                        examples: [
+                            { level: "Dasar", q: "Hitung volume sebuah kubus yang panjang rusuknya 5cm.", a: "V = s³ = 5 x 5 x 5 = 125 cm³." },
+                            { level: "Menengah", q: "Sebuah kolam berbentuk balok dengan ukuran 4m x 3m x 2m diisi air sebanyak 3/4 bagian. Berapa liter air dalam kolam tersebut?", a: "V total = 4 x 3 x 2 = 24 m³. Isi = 3/4 x 24 = 18 m³. Dalam liter = 18.000 liter." },
+                            { level: "Tinggi (HOTS)", q: "Sebuah kaleng berbentuk tabung memiliki jari-jari 7cm dan tinggi 20cm. Jika sisi samping kaleng akan ditutup label kertas, berapakah luas minimal kertas yang dibutuhkan?", a: "Luas Selimut Tabung = 2 x π x r x t = 2 x 22/7 x 7 x 20 = 880 cm²." }
+                        ],
+                        items: [
+                            "Prisma: Luas alas x tinggi.",
+                            "Limas: 1/3 x Luas alas x tinggi."
+                        ]
+                    }
+                ],
+                notes: "Visualisasi spasial sangat penting dalam memahami geometri.",
+                quiz: [
+                    { q: "Sebuah kapal berlayar ke utara sejauh 90 km, lalu berbelok ke timur sejauh 120 km. Berapa jarak terpendek kapal dari titik awal?", options: ["150 km", "180 km", "210 km", "250 km"], correct: 0 },
+                    { q: "Volume sebuah bola dengan jari-jari 3 cm adalah... (π = 3,14)", options: ["113,04 cm³", "37,68 cm³", "150,72 cm³", "339,12 cm³"], correct: 0 },
+                    { q: "Besar sudut penyiku dari 35° adalah...", options: ["45°", "55°", "145°", "65°"], correct: 1 },
+                    { q: "Sebuah limas persegi dengan panjang sisi alas 10cm dan tinggi 12cm memiliki volume...", options: ["400 cm³", "1200 cm³", "600 cm³", "800 cm³"], correct: 0 },
+                    { q: "Dua segitiga dikatakan kongruen jika memenuhi syarat...", options: ["Sudut-sudutnya sama besar", "Sisi-sisinya sebanding", "Bentuk dan ukurannya sama", "Luasnya sama"], correct: 2 },
+                    { q: "Keliling lingkaran dengan jari-jari 14cm adalah...", options: ["44cm", "88cm", "154cm", "616cm"], correct: 1 },
+                    { q: "Banyak rusuk pada prisma segi-6 adalah...", options: ["12", "18", "24", "6"], correct: 1 },
+                    { q: "Titik A(3, -2) dicerminkan terhadap sumbu Y. Koordinat bayangannya adalah...", options: ["(3, 2)", "(-3, -2)", "(-3, 2)", "(2, -3)"], correct: 1 },
+                    { q: "Sebuah taman berbentuk lingkaran dengan diameter 20m. Jika di sekeliling taman akan ditanami pohon dengan jarak 2m, berapa banyak pohon?", options: ["31 pohon", "32 pohon", "62 pohon", "10 pohon"], correct: 0 },
+                    { q: "Volume tabung yang memiliki diameter 14cm dan tinggi 10cm adalah...", options: ["1540 cm³", "6160 cm³", "770 cm³", "3080 cm³"], correct: 0 }
+                ]
+            },
+            {
+                id: 4,
+                category: "Data & Peluang",
+                icon: "BarChart3",
+                color: "bg-orange-500",
+                competency: "Interpretasi data, ukuran pemusatan, dan peluang kejadian dalam analisis risiko.",
+                materials: [
+                    { 
+                        title: "Statistika: Ukuran Pemusatan Data", 
+                        explanation: "Statistika membantu kita mengambil kesimpulan dari sekumpulan informasi. Rata-rata (mean) menunjukkan nilai tipikal, Median (tengah) menghindari pengaruh data ekstrem, dan Modus menunjukkan tren paling populer.",
+                        examples: [
+                            { level: "Dasar", q: "Data nilai matematika 5 siswa: 70, 80, 80, 90, 100. Tentukan mean, median, dan modusnya.", a: "Mean = 420/5 = 84. Median = 80. Modus = 80." },
+                            { level: "Menengah", q: "Dalam sebuah kelas, rata-rata nilai 10 siswa laki-laki adalah 75, sedangkan rata-rata 20 siswa perempuan adalah 81. Berapa rata-rata gabungan seluruh siswa?", a: "Total nilai = (10 x 75) + (20 x 81) = 750 + 1620 = 2370. Rata-rata = 2370 / 30 = 79." },
+                            { level: "Tinggi (HOTS)", q: "Rata-rata tinggi badan 8 orang adalah 160 cm. Jika Andi keluar dari kelompok tersebut, rata-rata tingginya menjadi 161 cm. Berapakah tinggi badan Andi?", a: "Total awal = 8 x 160 = 1280 cm. Total baru (7 orang) = 7 x 161 = 1127 cm. Tinggi Andi = 1280 - 1127 = 153 cm." }
+                        ],
+                        items: [
+                            "Urutkan data sebelum mencari median.",
+                            "Gunakan statistika untuk mendeteksi anomali data."
+                        ] 
+                    },
+                    { 
+                        title: "Peluang (Teoretis & Empiris)", 
+                        explanation: "Peluang adalah angka yang menunjukkan kemungkinan suatu kejadian. Di dunia nyata, ini sangat berguna dalam asuransi, ramalan cuaca, hingga pengambilan keputusan bisnis.",
+                        examples: [
+                            { level: "Dasar", q: "Sebuah dadu dilempar sekali. Berapa peluang muncul mata dadu genap?", a: "Mata dadu genap {2, 4, 6} = 3. Total {1-6} = 6. Peluang = 3/6 = 1/2." },
+                            { level: "Menengah", q: "Dalam sebuah kantong terdapat 5 kelereng merah, 3 biru, dan 2 kuning. Jika diambil satu kelereng secara acak, berapa peluang terambil kelereng bukan kuning?", a: "Jumlah bukan kuning (merah+biru) = 8. Total kelereng = 10. Peluang = 8/10 = 0,8." },
+                            { level: "Tinggi (HOTS)", q: "Dua buah dadu dilempar bersamaan satu kali. Berapakah peluang munculnya jumlah mata kedua dadu sama dengan 9?", a: "Pasangan (3,6), (4,5), (5,4), (6,3) = 4 kejadian. Total ruang sampel (6x6) = 36. Peluang = 4/36 = 1/9." }
+                        ],
+                        items: [
+                            "Peluang selalu bernilai antara 0 (mustahil) sampai 1 (pasti).",
+                            "Frekuensi harapan = Peluang x jumlah percobaan."
+                        ]
+                    }
+                ],
+                notes: "Kemampuan membaca data adalah literasi dasar di era informasi.",
+                quiz: [
+                    { q: "Rata-rata nilai ulangan 5 orang siswa adalah 8. Jika nilai satu orang siswa lagi digabungkan, rata-ratanya menjadi 8,2. Berapakah nilai siswa yang baru masuk?", options: ["8.5", "9", "9.2", "9.5"], correct: 2 },
+                    { q: "Peluang munculnya paling sedikit satu angka pada pelemparan dua koin secara bersamaan adalah...", options: ["1/4", "2/4", "3/4", "1/2"], correct: 2 },
+                    { q: "Modus dari data: 6, 7, 8, 6, 9, 7, 6, 10, 8, 6 adalah...", options: ["6", "7", "8", "9"], correct: 0 },
+                    { q: "Dalam sebuah kotak terdapat 12 bola merah dan 18 bola putih. Peluang terambil bola merah adalah...", options: ["2/3", "2/5", "3/5", "1/2"], correct: 1 },
+                    { q: "Diagram yang paling tepat untuk menunjukkan persentase perbandingan antar bagian data adalah...", options: ["Diagram Batang", "Diagram Garis", "Diagram Lingkaran", "Tabel"], correct: 2 },
+                    { q: "Median dari data: 4, 8, 5, 8, 9, 7, 6 adalah...", options: ["6", "7", "8", "7.5"], correct: 1 },
+                    { q: "Sebuah dadu dilempar 60 kali. Frekuensi harapan munculnya mata dadu prima adalah...", options: ["20 kali", "30 kali", "40 kali", "15 kali"], correct: 1 },
+                    { q: "Jangkauan (range) dari data: 15, 20, 10, 35, 25 adalah...", options: ["15", "20", "25", "30"], correct: 2 },
+                    { q: "Dari 40 siswa, 25 suka basket, 20 suka voli, dan 5 tidak suka keduanya. Berapa peluang memanggil siswa yang suka keduanya?", options: ["1/8", "1/4", "3/8", "1/2"], correct: 1 },
+                    { q: "Jika peluang hujan hari ini adalah 0,3. Maka peluang hari ini tidak hujan adalah...", options: ["0.3", "0.7", "1.0", "0.5"], correct: 1 }
+                ]
+            }
+        ];
+
+        const Icon = ({ name, className }) => {
+            const icons = {
+                Calculator: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>,
+                Sigma: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 7V4H6l6 8-6 8h12v-3"/></svg>,
+                Shapes: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>,
+                BarChart3: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>,
+                ChevronLeft: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 18-6-6 6-6"/></svg>,
+                CheckCircle: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+                XCircle: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            };
+            return icons[name] || null;
+        };
+
+        const App = () => {
+            const [view, setView] = useState('home'); 
+            const [activeTopic, setActiveTopic] = useState(null);
+            const [tab, setTab] = useState('materi');
+            const [quizIndex, setQuizIndex] = useState(0);
+            const [score, setScore] = useState(0);
+            const [showResult, setShowResult] = useState(false);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+            const handleTopicClick = (topic) => {
+                setActiveTopic(topic);
+                setView('topic');
+                setTab('materi');
+                resetQuiz();
+            };
+
+            const resetQuiz = () => {
+                setQuizIndex(0);
+                setScore(0);
+                setShowResult(false);
+                setSelectedAnswer(null);
+            };
+
+            const handleAnswer = (index, correctIndex) => {
+                if (selectedAnswer !== null) return;
+                setSelectedAnswer(index);
+                if (index === correctIndex) setScore(score + 1);
+            };
+
+            const nextQuestion = () => {
+                if (quizIndex < activeTopic.quiz.length - 1) {
+                    setQuizIndex(quizIndex + 1);
+                    setSelectedAnswer(null);
+                } else {
+                    setShowResult(true);
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col relative overflow-hidden bg-gray-50">
+                    <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-b-[3rem] z-0"></div>
+                    
+                    <header className="relative z-10 px-6 py-8 text-white max-w-4xl mx-auto w-full">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h1 className="text-3xl font-bold tracking-tight">TKA Math Master SMP</h1>
+                                <p className="text-blue-100 mt-1 text-sm opacity-90">Persiapan Tes Kompetensi Akademik</p>
+                            </div>
+                            {view !== 'home' && (
+                                <button onClick={() => setView('home')} className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-all">
+                                    <Icon name="ChevronLeft" className="text-white" />
+                                </button>
+                            )}
+                        </div>
+                    </header>
+
+                    <main className="relative z-10 flex-grow px-4 pb-20 max-w-4xl mx-auto w-full">
+                        {view === 'home' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                                <div className="col-span-1 md:col-span-2 bg-white rounded-2xl shadow-lg p-6 mb-4 border-l-4 border-blue-500">
+                                    <h2 className="text-lg font-bold text-gray-800 mb-2">Matriks Pembelajaran</h2>
+                                    <p className="text-gray-600 text-sm italic">Aplikasi ini dirancang berdasarkan matriks asesmen terbaru. Pilih topik di bawah ini untuk mempelajari Sub-elemen, Kompetensi, dan berlatih soal.</p>
+                                </div>
+
+                                {learningData.map((item) => (
+                                    <div key={item.id} onClick={() => handleTopicClick(item)} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all cursor-pointer transform hover:-translate-y-1 overflow-hidden group">
+                                        <div className={`h-3 w-full ${item.color}`}></div>
+                                        <div className="p-6">
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${item.color} bg-opacity-10 text-gray-700`}>
+                                                 <Icon name={item.icon} className={`w-6 h-6 ${item.color.replace('bg-', 'text-')}`} />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600">{item.category}</h3>
+                                            <p className="text-gray-500 text-sm line-clamp-2">{item.competency}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {view === 'topic' && activeTopic && (
+                            <div className="bg-white rounded-3xl shadow-xl overflow-hidden min-h-[500px] flex flex-col fade-in">
+                                <div className={`${activeTopic.color} p-6 text-white`}>
+                                    <h2 className="text-2xl font-bold mb-1">{activeTopic.category}</h2>
+                                    <p className="opacity-90 text-sm">{activeTopic.competency}</p>
+                                </div>
+
+                                <div className="flex border-b">
+                                    <button onClick={() => setTab('materi')} className={`flex-1 py-4 text-center font-semibold text-sm transition-colors ${tab === 'materi' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700'}`}>Materi & Konsep</button>
+                                    <button onClick={() => setTab('kuis')} className={`flex-1 py-4 text-center font-semibold text-sm transition-colors ${tab === 'kuis' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700'}`}>Latihan Kuis</button>
+                                </div>
+
+                                <div className="p-6 flex-grow">
+                                    {tab === 'materi' && (
+                                        <div className="space-y-8 fade-in h-[550px] overflow-y-auto custom-scroll pr-2">
+                                            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                                <h4 className="font-bold text-blue-800 text-sm uppercase mb-1">📌 Inti Konsep</h4>
+                                                <p className="text-blue-900 text-sm leading-relaxed">{activeTopic.notes}</p>
+                                            </div>
+
+                                            {activeTopic.materials.map((mat, idx) => (
+                                                <div key={idx} className="bg-slate-50 rounded-xl p-5 border border-slate-100">
+                                                    <h4 className="font-bold text-xl text-slate-800 mb-4 border-b pb-2 flex items-center">
+                                                        <span className="bg-slate-800 text-white w-6 h-6 rounded-md text-xs flex items-center justify-center mr-3">{idx+1}</span>
+                                                        {mat.title}
+                                                    </h4>
+                                                    <p className="text-gray-700 text-sm mb-6 leading-relaxed bg-white p-4 rounded-lg border border-gray-100">{mat.explanation}</p>
+
+                                                    <div className="space-y-4 mb-6">
+                                                        {mat.examples.map((ex, eIdx) => (
+                                                            <div key={eIdx} className="bg-white border-l-4 border-indigo-400 p-4 rounded shadow-sm">
+                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase mb-2 inline-block ${eIdx === 0 ? 'bg-green-100 text-green-700' : eIdx === 1 ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'}`}>
+                                                                    Contoh Soal - {ex.level}
+                                                                </span>
+                                                                <p className="text-gray-800 font-semibold text-sm mb-2">{ex.q}</p>
+                                                                <p className="text-gray-600 text-xs bg-slate-50 p-2 rounded"><strong>Solusi:</strong> {ex.a}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+
+                                                    <div className="bg-white rounded-lg p-4 border border-dashed border-slate-300">
+                                                        <h5 className="text-xs font-bold text-slate-400 uppercase mb-2">Poin Penting</h5>
+                                                        <ul className="space-y-1">
+                                                            {mat.items.map((sub, sIdx) => (
+                                                                <li key={sIdx} className="text-gray-600 text-xs flex items-start italic">
+                                                                    <span className="mr-2 text-blue-500">•</span>{sub}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {tab === 'kuis' && (
+                                        <div className="fade-in h-full flex flex-col">
+                                            {!showResult ? (
+                                                <div className="flex-grow flex flex-col">
+                                                    <div className="flex justify-between text-sm text-gray-500 mb-6">
+                                                        <span>Soal {quizIndex + 1} / {activeTopic.quiz.length}</span>
+                                                        <span className="font-bold">Skor: {score}</span>
+                                                    </div>
+                                                    <h3 className="text-lg font-bold text-gray-800 mb-8">{activeTopic.quiz[quizIndex].q}</h3>
+                                                    <div className="space-y-3 mb-8">
+                                                        {activeTopic.quiz[quizIndex].options.map((opt, oIdx) => {
+                                                            const isSelected = selectedAnswer === oIdx;
+                                                            const isCorrect = activeTopic.quiz[quizIndex].correct === oIdx;
+                                                            let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all ";
+                                                            if (selectedAnswer === null) btnClass += "border-gray-100 hover:border-blue-400 hover:bg-blue-50 bg-white";
+                                                            else {
+                                                                if (isSelected && isCorrect) btnClass += "bg-green-100 border-green-500 text-green-800 font-bold";
+                                                                else if (isSelected && !isCorrect) btnClass += "bg-red-100 border-red-500 text-red-800";
+                                                                else if (!isSelected && isCorrect) btnClass += "bg-green-50 border-green-200 text-green-700 opacity-80";
+                                                                else btnClass += "opacity-40 border-gray-50 bg-gray-50";
+                                                            }
+                                                            return (
+                                                                <button key={oIdx} onClick={() => handleAnswer(oIdx, activeTopic.quiz[quizIndex].correct)} disabled={selectedAnswer !== null} className={btnClass}>
+                                                                    <div className="flex items-center justify-between">
+                                                                        <span className="text-sm">{opt}</span>
+                                                                        {selectedAnswer !== null && isCorrect && <Icon name="CheckCircle" className="text-green-600 w-5 h-5" />}
+                                                                        {selectedAnswer === oIdx && !isCorrect && <Icon name="XCircle" className="text-red-600 w-5 h-5" />}
+                                                                    </div>
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    {selectedAnswer !== null && (
+                                                        <button onClick={nextQuestion} className="mt-auto w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-shadow shadow-lg">
+                                                            {quizIndex < activeTopic.quiz.length - 1 ? 'Soal Berikutnya' : 'Selesaikan Kuis'}
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="text-center py-10 fade-in">
+                                                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600">
+                                                        <Icon name="BarChart3" className="w-10 h-10" />
+                                                    </div>
+                                                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Latihan Selesai!</h3>
+                                                    <p className="text-gray-500 mb-6">Skor Pemahaman Kamu:</p>
+                                                    <div className="text-6xl font-black text-blue-600 mb-8">{Math.round((score / activeTopic.quiz.length) * 100)}</div>
+                                                    <div className="flex gap-4 justify-center">
+                                                        <button onClick={resetQuiz} className="px-8 py-3 border-2 rounded-xl text-gray-600 hover:bg-gray-50 font-bold">Ulangi</button>
+                                                        <button onClick={() => setView('home')} className="px-8 py-3 bg-blue-600 rounded-xl text-white hover:bg-blue-700 font-bold shadow-lg">Materi Lain</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                         {/* Footer / Credits */}
+                    <footer className="bg-white border-t border-gray-200 py-8 mt-auto relative z-10">
+                        <div className="max-w-4xl mx-auto px-6 text-center">
+                            <p className="text-gray-500 text-sm mb-4">
+                                Aplikasi Pembelajaran Persiapan Tes Kompetensi Akademik SMP
+                            </p>
+                            <div className="inline-flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                <div className="text-left">
+                                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Creator Credit</p>
+                                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-sm font-medium">
+                                        <a 
+                                            href="https://klikajar.com/portofolio-tretan-jamal" 
+                                            target="_blank" 
+                                            className="flex items-center text-gray-800 hover:text-blue-600 transition-colors"
+                                        >
+                                            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                            Tretan Jamal
+                                        </a>
+                                        <a 
+                                            href="https://api.whatsapp.com/send?phone=628233273400" 
+                                            target="_blank" 
+                                            className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.68-2.031-.967-.272-.099-.47-.149-.669.198-.199.347-.769.967-.943 1.165-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                            WA: 08233273400
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
